@@ -373,9 +373,25 @@
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\core\\book_service.py',
    'PYMODULE'),
+  ('app.core.book_validator',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\core\\book_validator.py',
+   'PYMODULE'),
   ('app.core.generator',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\core\\generator.py',
+   'PYMODULE'),
+  ('app.core.mass_export',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\core\\mass_export.py',
+   'PYMODULE'),
+  ('app.core.project_manager',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\core\\project_manager.py',
+   'PYMODULE'),
+  ('app.core.template_manager',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\core\\template_manager.py',
    'PYMODULE'),
   ('app.core.validation',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
@@ -409,6 +425,10 @@
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\models\\domain.py',
    'PYMODULE'),
+  ('app.models.project',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\models\\project.py',
+   'PYMODULE'),
   ('app.pdf',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\pdf\\__init__.py',
@@ -432,6 +452,10 @@
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\themes\\__init__.py',
    'PYMODULE'),
+  ('app.themes.advanced_themes',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\themes\\advanced_themes.py',
+   'PYMODULE'),
   ('app.themes.theme_manager',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\themes\\theme_manager.py',
@@ -443,6 +467,26 @@
   ('app.ui.application',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\ui\\application.py',
+   'PYMODULE'),
+  ('app.ui.book_preview',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\ui\\book_preview.py',
+   'PYMODULE'),
+  ('app.ui.cover_creator',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\ui\\cover_creator.py',
+   'PYMODULE'),
+  ('app.ui.mass_export_dialog',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\ui\\mass_export_dialog.py',
+   'PYMODULE'),
+  ('app.ui.puzzle_overview',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\ui\\puzzle_overview.py',
+   'PYMODULE'),
+  ('app.ui.visual_editor',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\ui\\visual_editor.py',
    'PYMODULE'),
   ('app.utils',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '

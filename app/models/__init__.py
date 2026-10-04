@@ -3,6 +3,7 @@
 from .domain import (
     AppConfig,
     Coordinate,
+    DIFFICULTY_PRESETS,
     ExportConfig,
     GenerationResult,
     GridConfig,
@@ -17,9 +18,10 @@ from .domain import (
     WordPlacement,
     word_list_rows,
 )
+from .project import Project, ProjectMetadata
 
 __all__ = [
-    "AppConfig", "Coordinate", "ExportConfig", "GenerationResult", "GridConfig", "PAGE_PRESETS",
+    "AppConfig", "Coordinate", "DIFFICULTY_PRESETS", "ExportConfig", "GenerationResult", "GridConfig", "PAGE_PRESETS",
     "LayoutConfig", "MarginConfig", "PageConfig", "Puzzle", "PuzzleBook",
     "ValidationError", "Word", "WordPlacement",
     "word_list_rows",

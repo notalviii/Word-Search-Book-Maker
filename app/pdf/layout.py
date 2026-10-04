@@ -17,6 +17,18 @@ SOLUTION_ROWS = 2
 SOLUTIONS_PER_PAGE = SOLUTION_COLUMNS * SOLUTION_ROWS
 SOLUTION_GUTTER = 10.0
 
+
+def get_solution_layout(solutions_per_page: int) -> tuple[int, int]:
+    """Get the layout (columns, rows) for solutions per page."""
+    if solutions_per_page == 1:
+        return (1, 1)
+    elif solutions_per_page == 2:
+        return (1, 2)  # 2 solutions vertically
+    elif solutions_per_page == 4:
+        return (2, 2)  # 2x2 grid
+    else:
+        return (2, 2)  # Default to 4
+
 # Global locale manager for PDF layout
 _locale = LocaleManager()
 
@@ -62,19 +74,24 @@ def page_content_rect(config: AppConfig) -> Rect:
     return content
 
 
-def solution_cell_rects(config: AppConfig, occupied: int = SOLUTIONS_PER_PAGE) -> list[Rect]:
-    """Rectángulos 2×2 (origen PDF abajo-izquierda) para hasta cuatro soluciones."""
+def solution_cell_rects(config: AppConfig, occupied: int = 4) -> list[Rect]:
+    """Calculate solution cell rectangles based on solutions_per_page configuration."""
     content = page_content_rect(config)
-    gutter = SOLUTION_GUTTER
-    cell_width = (content.width - gutter) / SOLUTION_COLUMNS
-    cell_height = (content.height - gutter) / SOLUTION_ROWS
+    solutions_per_page = config.export.solutions_per_page
+    cols, rows = get_solution_layout(solutions_per_page)
+    gutter = config.export.solution_spacing
+    
+    cell_width = (content.width - gutter * (cols - 1)) / cols
+    cell_height = (content.height - gutter * (rows - 1)) / rows
+    
     if cell_width <= 8 or cell_height <= 8:
         raise ValueError(_locale.pdf("no_space_solution"))
+    
     cells: list[Rect] = []
-    count = max(0, min(int(occupied), SOLUTIONS_PER_PAGE))
+    count = max(0, min(int(occupied), solutions_per_page))
     for index in range(count):
-        column = index % SOLUTION_COLUMNS
-        row_from_top = index // SOLUTION_COLUMNS
+        column = index % cols
+        row_from_top = index // cols
         x = content.x + column * (cell_width + gutter)
         y = content.top - (row_from_top + 1) * cell_height - row_from_top * gutter
         cells.append(Rect(x, y, cell_width, cell_height))

@@ -1,63 +1,157 @@
-# Word Search Book Maker v2.0.0
+# Word Search Book Maker v3.0.0
 
-<<<<<<< HEAD
-A Windows desktop application that converts a UTF-8 CSV file into a word search puzzle book and its solutions in PDF format. The application maintains the grid, words and coordinates as domain data; the solution is drawn over **the same grid**, never over a regenerated puzzle.
+A professional Windows desktop application for creating word search puzzle books and their solutions in PDF format. The application maintains the grid, words and coordinates as domain data; solutions are drawn over **the same grid**, never over a regenerated puzzle.
 
-## Version 2.0.0 New Features
+## Version 3.0.0 New Features
 
-### Multi-language Support
-- **Application Interface**: The UI now supports English and Spanish
-- **PDF Generation**: The selected language determines the language of all generated PDF interface text (titles, labels, headings)
-- **Language Selection**: Choose your preferred language from the settings panel
-- **Persistence**: Your language choice is saved in the configuration file
-- **Extensible**: The architecture allows for easy addition of new languages in the future
+### Enhanced Solutions System
+- **Flexible Solutions per Page**: Choose between 1, 2, or 4 solutions per page
+- **4 Solutions per Page**: Optimised 2×2 grid layout for efficient solution pages
+- **Advanced Solution Configuration**: Customise spacing, cell size, line width, highlight colour, and form
+- **Solution Display Options**: Show/hide puzzle numbers, titles, and word lists in solutions
+- **Automatic Page Calculation**: System automatically calculates required solution pages based on puzzle count
+- **Clean Last Page**: When puzzle count isn't a multiple of 4, the last page uses only necessary spaces
 
-Note: User-provided puzzle words are never translated automatically. CSV words remain exactly as supplied, apart from existing normalisation rules.
+### Mass Generation
+- **Generate Hundreds of Puzzles**: Generate large quantities of puzzles in a single operation
+- **Progress Tracking**: Real-time progress display during mass generation
+- **Failure Recovery**: Continues generating even if individual puzzles fail
+- **Failure Reporting**: Identifies which puzzles failed and why
+- **Retry Failed Puzzles**: Regenerate only the puzzles that failed
 
-### Custom Visual Themes
-- **Light/Clean**: A clean, modern light theme
-- **Dark/Modern**: A sleek dark theme for reduced eye strain
-- **Soft/Minimal**: A gentle, minimal colour scheme
-- **High Contrast**: High contrast theme for accessibility
-- **Theme Selection**: Choose your preferred theme from the settings panel
-- **Persistence**: Your theme choice is saved in the configuration file
+### Enhanced Individual Regeneration
+- **Regenerate Single Puzzle**: Regenerate only the currently selected puzzle
+- **Regenerate Multiple**: Regenerate multiple selected puzzles at once
+- **Regenerate All**: Regenerate all puzzles in the book
+- **Preserve Others**: Other puzzles remain completely unchanged during regeneration
+- **Configuration Preservation**: Each puzzle retains its generation configuration
+- **Valid Solutions**: Each regenerated puzzle receives a new valid solution matching its grid
 
-### Individual Puzzle Regeneration
-- **Regenerate Single Puzzle**: Regenerate only the currently selected puzzle without regenerating the entire project
-- **Preserves Other Puzzles**: Other puzzles remain completely unchanged
-- **Valid Regeneration**: The regenerated puzzle receives new valid grid and coordinate data
-- **Exact Solution**: The solution corresponds exactly to the new grid
-- **CSV Unchanged**: The source CSV file is not modified
-- **Stable Numbering**: Puzzle numbering and ordering remain stable
-- **Preview**: The regenerated puzzle can be previewed before export
+### Difficulty Levels
+- **Preset Difficulties**: Easy, Medium, Hard, Expert, and Custom
+- **Difficulty-Based Generation**: Difficulty affects the generation algorithm
+- **Automatic Configuration**: Each preset configures grid size, intersections, spacing, and attempts
+- **Custom Override**: Use Custom mode to manually configure all parameters
 
-### Improved Word Spacing
-- **Better Spacing Algorithm**: Modified puzzle generation to prefer placements with better word separation
-- **Less Crowding**: Words are slightly more separated from each other where possible
-- **Respects Constraints**: The improvement respects existing grid size and direction settings
-- **Graceful Fallback**: If preferred spacing cannot be achieved, the system falls back to existing placement behaviour
-- **Configurable**: The "Prefer spacing" option in the puzzle settings allows you to enable or disable this feature
+### Enhanced Page Formats
+- **US Letter**: Standard letter size (8.5 × 11 in)
+- **A4**: European standard (210 × 297 mm)
+- **6 × 9 in**: Compact book format
+- **7 × 10 in**: Popular trade paperback size (NEW in v3.0.0)
+- **8.5 × 11 in**: Standard letter format
+- **Custom**: Any custom dimensions
 
-### Enhanced Windows Executable
-- **Improved Packaging**: Updated PyInstaller configuration for better resource inclusion
-- **Complete Dependencies**: All required dependencies are included in the executable
-- **Translation Files**: Translation files are bundled with the executable
-- **Theme Resources**: Theme resources are included in the package
-- **No Console**: The executable launches without a console window
-- **Standalone**: No Python installation required on the target computer
+### Comprehensive Validation
+- **Pre-Export Validation**: Complete validation before PDF generation
+- **Error Detection**: Identifies unplaced words, invalid grids, coordinate mismatches
+- **Warning System**: Reports potential issues without blocking export
+- **Detailed Reports**: Clear categorisation of correct, warning, and error states
+- **Margin Validation**: Ensures all elements stay within page margins
+- **Solution Validation**: Verifies solution configurations are valid
+
+### Enhanced Project Metadata
+- **Project Information**: Project name, theme, language, and status tracking
+- **Creation Tracking**: Created date and last modification date
+- **Status Management**: Track project status (draft, ready, exported)
+- **Source Preservation**: CSV source path preserved in project
+
+### Enhanced Generation Options
+- **Word Length Constraints**: Minimum and maximum word length filtering
+- **Configurable Spacing**: Toggle prefer spacing for less crowded arrangements
+- **Direction Control**: Individual activation/deactivation of all 8 directions
+- **Custom Difficulty Override**: Override preset difficulty with custom settings
+
+### Full Project Management System
+- **Create Projects**: Create new projects with metadata and configuration
+- **Open Projects**: Load existing projects from the projects directory
+- **Save Projects**: Save current configuration and puzzles as a project
+- **Duplicate Projects**: Create copies of existing projects
+- **Rename Projects**: Rename project files
+- **Delete Projects**: Remove projects from the projects directory
+- **Project Metadata**: Track name, theme, language, status, creation date, and modification date
+
+### Puzzle Organization Overview
+- **Grid View**: Visual grid view of all puzzles in the book
+- **Puzzle Information**: Display puzzle number, word count, grid size, and generation status
+- **Select Puzzles**: Select single or multiple puzzles for batch operations
+- **Delete Puzzles**: Remove puzzles from the book
+- **Duplicate Puzzles**: Create copies of existing puzzles
+- **Regenerate Puzzles**: Regenerate selected puzzles individually or in batches
+- **Navigation**: Navigate to specific puzzles from the overview
+
+### Book Preview with Navigation
+- **Full Book Preview**: Preview all pages including puzzles and solutions
+- **Navigation Controls**: First, previous, next, and last page buttons
+- **Page Jump**: Go directly to a specific page number
+- **Zoom Controls**: Zoom in and out of the preview
+- **Page Type Indicator**: Shows whether the current page is a puzzle or solution
+- **Solution Grouping**: Displays when multiple solutions are grouped on one page
+
+### Mass Export
+- **Generate Multiple PDFs**: Export multiple PDFs from configuration variations
+- **Solution Variations**: Export with 1, 2, or 4 solutions per page
+- **Page Format Variations**: Export with different page formats (A4, Letter, 6×9, etc.)
+- **Progress Tracking**: Real-time progress during mass export
+- **Failure Recovery**: Continues exporting even if individual PDFs fail
+- **Summary Report**: Shows completed, failed, and total exports
+
+### Template System
+- **Save Templates**: Save current configuration as a reusable template
+- **Load Templates**: Apply saved templates to current configuration
+- **Delete Templates**: Remove templates from the templates directory
+- **Template Categories**: Organise templates by category (general, puzzle, solution, cover)
+- **Deep Merge**: Template settings merge with existing configuration
+- **Template Metadata**: Track template name, description, creation date, and modification date
+
+### Visual Editor with Drag & Drop
+- **Visual Layout Editor**: Visual representation of puzzle page layout
+- **Drag & Drop**: Drag elements to reposition them on the page
+- **Title Editing**: Edit title text and position
+- **Subtitle Editing**: Edit subtitle text and position
+- **Font Size Control**: Adjust title and subtitle font sizes
+- **Grid Positioning**: Set grid position using X/Y percentages
+- **Cell Size Adjustment**: Modify grid cell size
+- **Word List Position**: Choose word list position (above, below, left, right)
+- **Real-time Preview**: See changes reflected immediately in the preview
+
+### Cover Creator
+- **Book Title**: Set the main title for the book cover
+- **Subtitle**: Add a subtitle with puzzle count or description
+- **Author**: Set the author name
+- **Background Colour**: Choose from predefined background colours
+- **Theme Selection**: Select from Classic, Modern, Kids, or Elegant themes
+- **Visual Preview**: Preview the cover before saving
+- **Cover Configuration**: Save cover settings for reuse
+
+### Advanced Theme System
+- **Complete Colour Themes**: Full control over UI and PDF colours
+- **UI Colours**: Background, panel, button, text, border, and input colours
+- **PDF Grid Colours**: Grid background, border, and letter colours
+- **PDF Solution Colours**: Highlight, circle, and line colours
+- **PDF Word List Colours**: Background and text colours for word lists
+- **PDF Title Colours**: Title and subtitle text colours
+- **Typography Settings**: Font families and sizes for both UI and PDF
+- **Predefined Themes**: Classic, Minimal, Modern, Kids, Elegant, and Large Print
+- **Custom Themes**: Create and save custom theme configurations
+
+### Enhanced PDF Export Modes
+- **Complete Export**: Export full book with puzzles and solutions (default)
+- **Puzzles Only**: Export only puzzle pages without solutions
+- **Solutions Only**: Export only solution pages without puzzles
+- **Export Mode Selection**: Choose export mode from the interface
+
+### Extended Multi-language Support
+- **Six Languages**: English, Spanish, French, German, Italian, and Portuguese
+- **Complete Translations**: Full UI and PDF translations for all languages
+- **Language Selection**: Choose language from settings panel
+- **PDF Language**: Selected language determines PDF labels and headings
+- **Language Preservation**: Language choice persisted in configuration
+- **Extensible Architecture**: Easy to add additional languages
 
 ## Requirements and Installation
 
 - Windows and Python 3.12 or later
 - Updated `pip`
-=======
-Desktop application for Windows that converts a CSV file into a word search puzzle book and its solutions in PDF format. The application keeps the grid, words and coordinates as domain data; the solution is drawn on **the same grid**, never on a regenerated puzzle.
-
-## Requirements and Installation
-
-- Windows and Python 3.12 or later.
-- Up-to-date `pip`.
->>>>>>> 9b6f60039717a2d735f34c9274c995cc48c632b8
 
 ```powershell
 py -3.12 -m venv .venv
@@ -67,140 +161,204 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
-<<<<<<< HEAD
 If PowerShell does not allow activating the environment, you can run `.\.venv\Scripts\python.exe main.py` directly.
 
 ## Usage
 
+### Basic Workflow
 1. Click **LOAD CSV** and select a UTF-8 file
-2. Configure page, margins, grid, directions and layout
-3. Click **PREVIEW**. Generation occurs outside the window thread
-4. Navigate between puzzles, enable *View solution* and use `+`/`−` to zoom in or out
-5. Choose the output path and click **GENERATE PDF**. You can cancel without preserving an incomplete PDF
+2. Configure page, margins, grid, directions, and layout
+3. Choose difficulty preset or configure custom settings
+4. Click **PREVIEW** to generate and preview puzzles
+5. Navigate between puzzles, enable *View solution*, and use `+`/`−` to zoom
+6. Configure solutions per page (1, 2, or 4)
+7. Choose output path and click **GENERATE PDF**
 
-The panel allows you to select `all` puzzles, specific numbers (`1,4,8`) or ranges (`1-5,9`). It also allows two orders: consecutive puzzle/solution or all puzzles followed by all solutions.
+### v3.0.0 Features
 
-**New in v2.0.0**:
-- Use the **Language** dropdown in the settings to switch between English and Spanish
-- Use the **Theme** dropdown in the settings to switch between visual themes
-- Use the **REGENERATE PUZZLE** button to regenerate only the currently selected puzzle
-- Enable **Prefer spacing** in the puzzle settings to improve word separation
+**Project Management:**
+- Click **Nuevo** to create a new project with current configuration
+- Click **Abrir** to load an existing project from the projects directory
+- Click **Guardar** to save the current configuration and puzzles as a project
+- Click **Duplicar** to create a copy of the current project
+- Click **Renombrar** to rename the current project
+- Click **Eliminar** to delete the current project
+- Project metadata includes name, theme, language, status, and dates
+
+**Puzzle Overview:**
+- Click **VER SOPAS** to open the puzzle organization overview
+- View all puzzles in a grid with word count, grid size, and status
+- Select multiple puzzles using checkboxes
+- Click **Regenerate Selected** to regenerate selected puzzles
+- Click **Duplicate Selected** to create copies of selected puzzles
+- Click **Delete Selected** to remove selected puzzles from the book
+- Individual action buttons for each puzzle (Regenerate, Duplicate, Delete)
+
+**Book Preview:**
+- Click **PREVIEW BOOK** to open the enhanced book preview window
+- Navigate through all pages using First, Previous, Next, Last buttons
+- Jump to a specific page using the page number input
+- Zoom in and out using the + and - buttons
+- Page type indicator shows whether viewing a puzzle or solution page
+- Solution grouping displayed when multiple solutions are on one page
+
+**Mass Export:**
+- Click **MASS EXPORT** to open the mass export dialog
+- Select variations to export (solutions per page, page formats)
+- Choose output directory for exported PDFs
+- Click **Start Export** to begin mass export
+- Progress shows current export and any failures
+- Failed exports are reported but don't stop the process
+- Summary shows completed, failed, and total exports
+
+**Template System:**
+- Enter a template name and click **Guardar** to save current configuration as a template
+- Click **Cargar** to apply a saved template to current configuration
+- Click **Eliminar** to remove a template
+- Templates are stored in the templates directory
+- Template settings merge with existing configuration
+
+**Visual Editor:**
+- Click **Editor Visual** to open the visual layout editor
+- Drag elements on the canvas to reposition them
+- Edit title and subtitle text
+- Adjust title and subtitle font sizes
+- Set grid position using X/Y percentages
+- Modify grid cell size
+- Choose word list position (above, below, left, right)
+- Click **Apply** to save changes to configuration
+
+**Cover Creator:**
+- Click **Creador Portada** to open the cover creator
+- Enter book title, subtitle, and author
+- Choose background colour from predefined options
+- Select theme (Classic, Modern, Kids, Elegant)
+- Preview the cover before saving
+- Click **Save Cover** to save cover configuration
+
+**Mass Generation:**
+- Click **GENERACIÓN MASIVA** to generate all puzzles at once
+- Progress shows current puzzle and any failures
+- Failed puzzles are reported but don't stop generation
+- Retry failed puzzles individually
+
+**Individual Regeneration:**
+- Navigate to a puzzle and click **REGENERAR SOPA** to regenerate just that puzzle
+- Other puzzles remain unchanged
+- Preview the regenerated puzzle before export
+
+**Difficulty Presets:**
+- Choose from Easy, Medium, Hard, Expert, or Custom
+- Each preset automatically configures grid size and generation parameters
+- Custom mode allows full manual control
+
+**Solutions Configuration:**
+- Select export mode (completo, puzzles_solamente, soluciones_solamente)
+- Select 1, 2, or 4 solutions per page
+- 4 solutions per page uses an optimised 2×2 grid layout
+- Configure solution spacing, cell size, and display options
+- Solutions automatically adapt to page format
+
+**Validation:**
+- Validation runs automatically before export
+- Errors and warnings are reported
+- Export is blocked for critical errors
+
+**Language Selection:**
+- Choose from English, Spanish, French, German, Italian, or Portuguese
+- Selected language affects both UI and PDF labels
+- Language choice is persisted in configuration
+
+**Theme Selection:**
+- Choose from Light, Dark, Soft, or High Contrast themes
+- Advanced themes available through theme system
+- Theme choice is persisted in configuration
+
+### Advanced Usage
+
+**Puzzle Selection:**
+- The panel allows selecting `all` puzzles, specific numbers (`1,4,8`), or ranges (`1-5,9`)
+- Selection applies to generation and export
+
+**Solution Order:**
+- **Consecutive**: Puzzle + solution for each group
+- **Solutions at End**: All puzzles followed by all solutions
+
+**Solutions per Page:**
+- **1 per page**: Full-size solution on each page
+- **2 per page**: Two solutions stacked vertically
+- **4 per page**: 2×2 grid layout (most efficient)
 
 ## CSV Format
 
 No header. Each line is a puzzle and each comma-separated field is a word. Lines may have different numbers of words.
-=======
-If PowerShell does not allow the environment to be activated, you can run `.\.venv\Scripts\python.exe main.py` directly.
-
-## Usage
-
-1. Click **LOAD CSV** and select a UTF-8 file.
-2. Configure the page, margins, grid, directions and layout.
-3. Click **PREVIEW**. Generation takes place outside the window thread.
-4. Navigate between the puzzles, enable *View solution*, and use `+`/`−` to zoom in or out.
-5. Choose the output path and click **GENERATE PDF**. You can cancel without an incomplete PDF being kept.
-
-The panel allows you to select `all` puzzles, specific numbers (`1,4,8`) or ranges (`1-5,9`). It also provides two ordering options: puzzle/solution consecutively, or all puzzles followed by all solutions.
-
-## CSV Format
-
-There is no header. Each line represents one puzzle, and each comma-separated field is a word. Lines can contain different numbers of words.
->>>>>>> 9b6f60039717a2d735f34c9274c995cc48c632b8
 
 ```csv
-dog,cat,tiger,lion,bear
-horse,COW,pig,sheep,hen
-tree,child,penguin,EMU,lorry
+perro,gato,tigre,león,oso
+caballo,VACA,cerdo,oveja,gallina
+árbol,niño,pingüino,ÑANDÚ,camión
 ```
 
-<<<<<<< HEAD
 The application removes external spaces and converts internally to uppercase: ` árbol ` becomes `ÁRBOL`. It preserves accents, `Ñ` and `Ü`. Before generation, it blocks empty files, empty lines, empty fields (including trailing commas), duplicates within the same puzzle, non-UTF-8 encoding and words incompatible with the grid.
 
 A file ready for testing is available at [examples/palabras.csv](examples/palabras.csv) and a configuration at [examples/configuracion_animales.json](examples/configuracion_animales.json).
 
 ## Configuration and PDF
 
-- Page sizes A4, Letter, 6 × 9 in, 8.5 × 11 in and custom are independent of rows and columns
+- Page sizes A4, Letter, 6 × 9 in, 7 × 10 in, 8.5 × 11 in and custom are independent of rows and columns
 - The four margins are edited separately in the active page unit (`mm` or `in`)
 - Activate directions individually; diagonals, reversed words and intersections are independent options
-- *Auto fit* calculates the largest cell that fits together with titles and word list. If it does not fit, the application reports the error before export
-- Save/load configuration in JSON from the interface. The CSV is not altered when loading a JSON
+- *Auto fit* calculates the largest cell that fits together with titles and word list
+- Difficulty presets automatically configure grid size and generation parameters
+- Save/load configuration in JSON from the interface
+- Configuration includes v3.0.0 settings (solutions per page, difficulty, word length constraints)
 
 The PDF is created with ReportLab and uses lines, text and vector marks. Solutions use circles, lines or highlights over the coordinates preserved by the generator.
 
-**New in v2.0.0**:
-- Configuration files now include `language` and `theme` settings
-- Old configuration files without these fields will load with sensible defaults (English, Light theme)
-- The `prefer_spacing` grid option controls word spacing behaviour
+**v3.0.0 Configuration:**
+- `solutions_per_page`: Number of solutions per page (1, 2, or 4)
+- `solution_spacing`: Spacing between solutions on multi-solution pages
+- `solution_cell_size`: Cell size for solution grids
+- `solution_line_width`: Line width for solution highlights
+- `solution_highlight_color`: Colour for solution highlights
+- `show_puzzle_number_in_solution`: Show puzzle number in solution
+- `show_title_in_solution`: Show title in solution
+- `show_words_in_solution`: Show word list in solution
+- `difficulty`: Difficulty preset (fácil, medio, difícil, experto, personalizado)
+- `min_word_length`: Minimum word length
+- `max_word_length`: Maximum word length
 
-=======
-The application removes leading and trailing spaces and converts text to uppercase internally: ` tree ` becomes `TREE`. Accented characters, `Ñ` and `Ü` are preserved. Before generation, empty files, empty lines, empty fields (including trailing commas), duplicates within the same puzzle, non-UTF-8 encoding and words that are incompatible with the grid are rejected.
-
-A ready-to-use test file is available at [examples/palabras.csv](examples/palabras.csv), along with a configuration file at [examples/configuracion_animales.json](examples/configuracion_animales.json).
-
-## Configuration and PDF
-
-- A4, Letter, 6 × 9 in, 8.5 × 11 in and custom page sizes are independent of the number of rows and columns.
-- All four margins can be edited separately using the active page unit (`mm` or `in`).
-- Directions can be enabled individually; diagonals, reversed words and intersections are independent options.
-- *Auto-fit* calculates the largest cell size that fits alongside the titles and word list. If it does not fit, the application reports the error before exporting.
-- Save/load the configuration as JSON directly from the interface. Loading a JSON file does not modify the CSV.
-
-The PDF is created using ReportLab and uses vector lines, text and markers. Solutions use circles, lines or highlights drawn over the coordinates retained by the generator.
-
->>>>>>> 9b6f60039717a2d735f34c9274c995cc48c632b8
 ## Testing
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-<<<<<<< HEAD
-The suite covers Spanish normalisation, variable/erroneous CSV, generation, direction constraints, coordinates, configurations, layout, valid PDF, language switching, theme loading, individual puzzle regeneration, word spacing behaviour and backwards compatibility. For manual performance tests, use CSV with 10, 50, 100, 500 and 1,000 lines; progress indicates current puzzle/page and the Cancel button leaves the final destination intact.
-
-**New in v2.0.0**:
-- Tests for UI language switching
-- Tests for PDF language switching
-- Tests for Spanish and English PDF output
-- Tests for translation fallback behaviour
-- Tests for theme loading and saving
-- Tests for individual puzzle regeneration
-- Tests for ensuring other puzzles remain unchanged during regeneration
-- Tests for ensuring regenerated coordinates match the regenerated grid
-- Tests for ensuring the CSV remains unchanged during regeneration
-- Tests for word-spacing behaviour
-- Tests for backwards compatibility with old configuration files
+The suite covers Spanish normalisation, variable/erroneous CSV, generation, direction constraints, coordinates, configurations, layout, valid PDF, language switching, theme loading, individual puzzle regeneration, word spacing behaviour, backwards compatibility, and v3.0.0 features including:
+- 1/2/4 solutions per page layouts
+- Mass generation with failure recovery
+- Multiple puzzle regeneration
+- Difficulty presets
+- Enhanced validation
+- Enhanced export configuration
 
 ## Windows Executable
 
 After installing dependencies, run:
-=======
-The test suite covers Spanish normalisation, variable/invalid CSV files, generation, direction restrictions, coordinates, configurations, layout and a valid PDF. For manual performance testing, use CSV files containing 10, 50, 100, 500 and 1,000 lines; the progress indicator shows the current puzzle/page, and the Cancel button leaves the final destination untouched.
-
-## Windows Executable
-
-After installing the dependencies, run:
->>>>>>> 9b6f60039717a2d735f34c9274c995cc48c632b8
 
 ```powershell
 .\build_windows.bat
 ```
 
-<<<<<<< HEAD
 The executable will appear in `dist\WordSearchBookMaker.exe`. The manual equivalent is:
-=======
-The executable will appear at `dist\WordSearchBookMaker.exe`. The equivalent manual command is:
->>>>>>> 9b6f60039717a2d735f34c9274c995cc48c632b8
 
 ```powershell
 pyinstaller --noconfirm --clean WordSearchBookMaker.spec
 ```
 
-<<<<<<< HEAD
-**Updated in v2.0.0**:
-- Uses a spec file for better control over packaging
-- Includes translation files and theme resources
-- Includes all required runtime assets
+**v3.0.0 Build:**
+- Uses spec file for better packaging control
+- Includes all dependencies, translation files, and theme resources
 - No Python installation required on target computer
 - Launches without console window
 
@@ -211,18 +369,48 @@ pyinstaller --noconfirm --clean WordSearchBookMaker.spec
 - **Cannot place a puzzle**: Increase rows/columns, allow intersections or activate more directions
 - **Layout does not fit**: Reduce margins, title/list or enable auto fit
 - **Window does not open**: Confirm the virtual environment is active and that `customtkinter` was installed from `requirements.txt`
-- **Language not changing**: Ensure the language is saved in the configuration file
-- **Theme not applying**: Some themes may have limited effect due to CustomTkinter's constraints
+- **Solutions layout issues**: Check solutions per page setting and page format
+- **Mass generation failures**: Check difficulty settings and word lengths
+- **Validation errors**: Review validation report and adjust configuration accordingly
 
-## Configuration Options (v2.0.0)
+## Architecture
+
+The application maintains clean separation of concerns:
+- **Puzzle Engine**: Word search generation with configurable difficulty
+- **Solution Engine**: Coordinate-based solution rendering
+- **Project Manager**: Configuration and project metadata
+- **Layout Engine**: Page layout calculation for puzzles and solutions
+- **Renderer**: Vector PDF rendering with ReportLab
+- **Validator**: Comprehensive validation before export
+- **UI**: CustomTkinter-based interface
+
+## Configuration Options (v3.0.0)
 
 ### New Settings
-- `language`: Application and PDF language (`en` or `es`, default: `en`)
-- `theme`: Visual theme (`light`, `dark`, `soft`, or `high_contrast`, default: `light`)
-- `grid.prefer_spacing`: Whether to prefer less crowded word placements (default: `true`)
+- `solutions_per_page`: Number of solutions per page (1, 2, or 4)
+- `solution_spacing`: Spacing between solutions on multi-solution pages
+- `solution_cell_size`: Cell size for solution grids
+- `solution_line_width`: Line width for solution highlights
+- `solution_highlight_color`: Colour for solution highlights
+- `solution_highlight_form`: Form of solution highlight (círculo, línea, resaltado)
+- `show_puzzle_number_in_solution`: Show puzzle number in solution
+- `show_title_in_solution`: Show title in solution
+- `show_words_in_solution`: Show word list in solution
+- `solution_font_size`: Font size for solution text
+- `difficulty`: Difficulty preset (fácil, medio, difícil, experto, personalizado)
+- `min_word_length`: Minimum word length
+- `max_word_length`: Maximum word length
+
+### Enhanced PuzzleBook Metadata
+- `project_name`: Project name
+- `theme`: Visual theme
+- `language`: Interface and PDF language
+- `created_date`: Project creation date
+- `modified_date`: Last modification date
+- `status`: Project status (draft, ready, exported)
 
 ### Backwards Compatibility
-- Old configuration files without the new settings will load with defaults
+- Old configuration files load with defaults for new settings
 - All existing settings are preserved
 - No existing functionality is removed
 
@@ -231,6 +419,10 @@ pyinstaller --noconfirm --clean WordSearchBookMaker.spec
 The application currently supports:
 - **English (en)**: Full UI and PDF support
 - **Spanish (es)**: Full UI and PDF support
+- **French (fr)**: Full UI and PDF support
+- **German (de)**: Full UI and PDF support
+- **Italian (it)**: Full UI and PDF support
+- **Portuguese (pt)**: Full UI and PDF support
 
 Additional languages can be added by extending the translation dictionaries in `app/i18n/translations.py`.
 
@@ -242,21 +434,41 @@ The application includes four built-in themes:
 - **Soft**: Gentle, minimal colour scheme
 - **High Contrast**: High contrast theme for accessibility
 
-## Architecture Notes
+## Version History
 
-- The core rule remains: A solution must always be generated from the exact grid and coordinates of its corresponding puzzle
-- The application is stable, maintainable and suitable for distribution as a Windows executable
-- The localisation system is shared between UI and PDF generation to avoid duplication
-- The theme system uses CustomTkinter's built-in theming with some custom extensions
-- Individual puzzle regeneration preserves all other puzzles and their grids
-=======
-If you can´t open use another solution I do is `cd /d "C:\Users\alvip\not_alviii\Word Search - not_alviii"` (With your location of the file)
-And then to run it `.\.venv\Scripts\python.exe .\main.py`
-## Troubleshooting
+### v3.0.0
+- **Solutions Enhancement**: Flexible 1/2/4 solutions per page with optimised 2×2 layout
+- **Mass Generation**: Generate hundreds of puzzles with failure recovery
+- **Enhanced Regeneration**: Regenerate single, multiple, or all puzzles
+- **Difficulty Presets**: Easy, Medium, Hard, Expert, and Custom modes
+- **Page Formats**: Added 7 × 10 in preset
+- **Validation System**: Comprehensive pre-export validation with detailed reports
+- **Project Metadata**: Enhanced project tracking with status and dates
+- **Generation Options**: Word length constraints and enhanced spacing control
+- **Full Project Management**: Create, open, save, duplicate, rename, and delete projects
+- **Puzzle Organization Overview**: Grid view of all puzzles with batch operations
+- **Book Preview with Navigation**: Full book preview with page navigation and zoom
+- **Mass Export**: Export multiple PDFs from configuration variations
+- **Template System**: Save, load, and delete reusable configuration templates
+- **Visual Editor**: Drag & drop visual editor for page layout
+- **Cover Creator**: Create and customise book covers
+- **Advanced Theme System**: Complete colour and typography themes for UI and PDF
+- **Enhanced PDF Export**: Export modes for complete, puzzles-only, or solutions-only
+- **Extended Multi-language**: Added French, German, Italian, and Portuguese (6 languages total)
+- **Testing**: Added comprehensive tests for all v3.0.0 features
 
-- **`python` opens the Microsoft Store or does not exist:** install Python 3.12+ from python.org and check `py -3.12 --version`.
-- **CSV not loaded:** save it as UTF-8 and check for trailing commas, duplicates and blank lines.
-- **A puzzle cannot be placed:** increase the number of rows/columns, allow intersections or enable more directions.
-- **The layout does not fit:** reduce the margins, title/word list size, or enable auto-fit.
-- **The window does not open:** make sure the virtual environment is active and that `customtkinter` was installed from `requirements.txt`.
->>>>>>> 9b6f60039717a2d735f34c9274c995cc48c632b8
+### v2.0.0
+- Multi-language support (English and Spanish)
+- Custom visual themes (Light, Dark, Soft, High Contrast)
+- Individual puzzle regeneration
+- Improved word spacing algorithm
+- Enhanced Windows executable packaging
+
+## Core Principles
+
+The application adheres to these core principles:
+- **Solution Integrity**: Solutions always use the exact grid and coordinates from puzzle generation
+- **No Automatic Translation**: User-provided puzzle words are never translated
+- **CSV Preservation**: CSV files are never modified by the application
+- **Architecture Separation**: Clean separation between generation, rendering, and UI
+- **Backwards Compatibility**: Old configuration files load with sensible defaults

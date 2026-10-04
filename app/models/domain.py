@@ -17,8 +17,40 @@ PAGE_PRESETS: dict[str, tuple[float, float, str]] = {
     "A4": (210.0, 297.0, "mm"),
     "Letter": (8.5, 11.0, "in"),
     "6 × 9 in": (6.0, 9.0, "in"),
+    "7 × 10 in": (7.0, 10.0, "in"),
     "8.5 × 11 in": (8.5, 11.0, "in"),
     "Personalizado": (210.0, 297.0, "mm"),
+}
+
+DIFFICULTY_PRESETS: dict[str, dict[str, object]] = {
+    "fácil": {
+        "rows": 10,
+        "columns": 10,
+        "allow_intersections": False,
+        "max_attempts": 200,
+        "prefer_spacing": True,
+    },
+    "medio": {
+        "rows": 15,
+        "columns": 15,
+        "allow_intersections": True,
+        "max_attempts": 150,
+        "prefer_spacing": True,
+    },
+    "difícil": {
+        "rows": 15,
+        "columns": 15,
+        "allow_intersections": True,
+        "max_attempts": 100,
+        "prefer_spacing": False,
+    },
+    "experto": {
+        "rows": 20,
+        "columns": 20,
+        "allow_intersections": True,
+        "max_attempts": 80,
+        "prefer_spacing": False,
+    },
 }
 
 
@@ -99,6 +131,23 @@ class PuzzleBook:
     def word_count_range(self) -> tuple[int, int]:
         counts = [len(puzzle.words) for puzzle in self.puzzles]
         return (min(counts), max(counts)) if counts else (0, 0)
+    
+    def to_dict(self) -> dict[str, Any]:
+        """Convert PuzzleBook to dictionary for project serialization."""
+        return {
+            "puzzles": [asdict(puzzle) for puzzle in self.puzzles],
+            "source_path": self.source_path,
+        }
+    
+    @classmethod
+    def from_dict(cls, raw: dict[str, Any]) -> "PuzzleBook":
+        """Load PuzzleBook from dictionary."""
+        puzzles_raw = raw.get("puzzles", [])
+        puzzles = [Puzzle(**p) for p in puzzles_raw]
+        return cls(
+            puzzles=puzzles,
+            source_path=raw.get("source_path"),
+        )
 
 
 @dataclass(slots=True)
@@ -147,6 +196,9 @@ class GridConfig:
     max_attempts: int = 120
     seed: int | None = None
     prefer_spacing: bool = True  # If True, prefer less crowded placements
+    difficulty: str = "medio"  # fácil | medio | difícil | experto | personalizado
+    min_word_length: int = 3
+    max_word_length: int = 15
 
     def direction_steps(self) -> list[tuple[int, int]]:
         candidates = {
@@ -161,6 +213,15 @@ class GridConfig:
             enabled.extend([(-row, -column) for row, column in enabled])
         # La deduplicación preserva el orden y evita explorar dos veces una dirección.
         return list(dict.fromkeys(enabled))
+
+    def apply_difficulty_preset(self, difficulty: str) -> None:
+        """Apply a difficulty preset to the grid configuration."""
+        if difficulty in DIFFICULTY_PRESETS:
+            preset = DIFFICULTY_PRESETS[difficulty]
+            for key, value in preset.items():
+                if hasattr(self, key):
+                    setattr(self, key, value)
+            self.difficulty = difficulty
 
 
 @dataclass(slots=True)
@@ -193,6 +254,19 @@ class ExportConfig:
     solution_style: str = "círculo"  # círculo | línea | resaltado
     output_path: str = "output/libro_sopas.pdf"
     selected_puzzles: str = "todas"  # todas | rango CSV (p. ej. 1-3,7)
+    # v3.0.0: Advanced solution configuration
+    solutions_per_page: int = 4  # 1 | 2 | 4
+    solution_spacing: float = 10.0
+    solution_cell_size: float = 18.0
+    solution_line_width: float = 0.6
+    solution_highlight_color: str = "#D22C2C"
+    solution_highlight_form: str = "círculo"  # círculo | línea | resaltado
+    show_puzzle_number_in_solution: bool = True
+    show_title_in_solution: bool = False
+    show_words_in_solution: bool = False
+    solution_font_size: float = 8.0
+    # v3.0.0: Export mode for selective export
+    export_mode: str = "completo"  # completo | puzzles_solamente | soluciones_solamente
 
 
 @dataclass(slots=True)
@@ -226,12 +300,16 @@ class AppConfig:
             allow_intersections=bool(grid_raw.get("allow_intersections", True)),
             max_attempts=int(grid_raw.get("max_attempts", 120)), seed=grid_raw.get("seed"),
             prefer_spacing=bool(grid_raw.get("prefer_spacing", True)),
+            difficulty=grid_raw.get("difficulty", "medio"),
+            min_word_length=int(grid_raw.get("min_word_length", 3)),
+            max_word_length=int(grid_raw.get("max_word_length", 15)),
         )
         layout_raw = raw.get("layout", {})
         layout_defaults = asdict(LayoutConfig())
         layout = LayoutConfig(**(layout_defaults | layout_raw))
         export_raw = raw.get("export", {})
         export_defaults = asdict(ExportConfig())
+        # Merge with defaults to handle new v3.0.0 fields
         export = ExportConfig(**(export_defaults | export_raw))
         language = raw.get("language", "en")
         theme = raw.get("theme", "light")

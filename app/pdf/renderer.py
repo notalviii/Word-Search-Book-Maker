@@ -15,7 +15,6 @@ from .fonts import resolve_pdf_font
 from .layout import (
     PageLayout,
     Rect,
-    SOLUTIONS_PER_PAGE,
     calculate_layout,
     compact_layout_config,
     solution_cell_rects,
@@ -42,12 +41,28 @@ class PdfBookRenderer:
     def page_sequence(self, book: PuzzleBook, config: AppConfig) -> list[PageSpec]:
         puzzles = book.puzzles
         puzzle_pages: list[PageSpec] = [([puzzle], False) for puzzle in puzzles]
+        
+        # Handle export mode
+        export_mode = config.export.export_mode
+        if export_mode == "puzzles_solamente":
+            return puzzle_pages
+        elif export_mode == "soluciones_solamente":
+            if not config.export.include_solutions:
+                return []
+            solutions_per_page = config.export.solutions_per_page
+            solution_pages: list[PageSpec] = [(group, True) for group in _chunks(puzzles, solutions_per_page)]
+            return solution_pages
+        # export_mode == "completo" (default)
+        
         if not config.export.include_solutions:
             return puzzle_pages
-        solution_pages: list[PageSpec] = [(group, True) for group in _chunks(puzzles, SOLUTIONS_PER_PAGE)]
+        
+        solutions_per_page = config.export.solutions_per_page
+        solution_pages: list[PageSpec] = [(group, True) for group in _chunks(puzzles, solutions_per_page)]
+        
         if config.export.order_mode == "consecutivo":
             pages: list[PageSpec] = []
-            for group in _chunks(puzzles, SOLUTIONS_PER_PAGE):
+            for group in _chunks(puzzles, solutions_per_page):
                 pages.extend(([puzzle], False) for puzzle in group)
                 pages.append((group, True))
             return pages
@@ -57,6 +72,7 @@ class PdfBookRenderer:
         for puzzle in book.puzzles:
             calculate_layout(puzzle, config)
         if config.export.include_solutions and book.puzzles:
+            solutions_per_page = config.export.solutions_per_page
             cell = solution_cell_rects(config, occupied=1)[0]
             inset = Rect(cell.x + 6, cell.y + 6, max(cell.width - 12, 4), max(cell.height - 12, 4))
             compact = compact_layout_config(config, inset)

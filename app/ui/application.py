@@ -11,15 +11,21 @@ from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from PIL import Image
 
-from app.core import BookGenerationCancelled, BookGenerationService, validate_app_config
+from app.core import BookGenerationCancelled, BookGenerationService, validate_app_config, ProjectManager, TemplateManager
 from app.csv import import_csv
 from app.i18n import LocaleManager, SUPPORTED_LANGUAGES
-from app.models import AppConfig, PAGE_PRESETS, PuzzleBook
+from app.models import AppConfig, PAGE_PRESETS, PuzzleBook, Project, ProjectMetadata
 from app.pdf import PdfBookRenderer
 from app.pdf.fonts import FONT_OPTION_NAMES
 from app.pdf.preview import render_preview
 from app.themes import THEMES
+from app.themes.advanced_themes import ADVANCED_THEMES
 from app.utils import load_config, save_config
+from app.ui.puzzle_overview import PuzzleOverviewDialog
+from app.ui.book_preview import BookPreviewWindow
+from app.ui.mass_export_dialog import MassExportDialog
+from app.ui.visual_editor import VisualEditorDialog
+from app.ui.cover_creator import CoverCreatorDialog
 
 
 class WordSearchBookMakerApp(ctk.CTk):
@@ -36,6 +42,9 @@ class WordSearchBookMakerApp(ctk.CTk):
         self.config_model = AppConfig()
         self.imported_book: PuzzleBook | None = None
         self.generated_book: PuzzleBook | None = None
+        self.current_project: Project | None = None
+        self.project_manager = ProjectManager()
+        self.template_manager = TemplateManager()
         self._events: queue.Queue[tuple[str, object]] = queue.Queue()
         self._cancel_event = threading.Event()
         self._worker: threading.Thread | None = None
@@ -103,6 +112,10 @@ class WordSearchBookMakerApp(ctk.CTk):
         puzzle = self._section(sidebar, "3. Sopa")
         self._entry(puzzle, "Filas", "grid.rows")
         self._entry(puzzle, "Columnas", "grid.columns")
+        difficulty_row = ctk.CTkFrame(puzzle, fg_color="transparent")
+        difficulty_row.pack(fill="x", padx=10, pady=2)
+        ctk.CTkLabel(difficulty_row, text="Dificultad", width=128, anchor="w").pack(side="left")
+        ctk.CTkComboBox(difficulty_row, values=["fácil", "medio", "difícil", "experto", "personalizado"], variable=self._var("grid.difficulty"), command=self._on_difficulty_change, width=165).pack(side="right")
         checks = ctk.CTkFrame(puzzle, fg_color="transparent")
         checks.pack(fill="x", padx=8, pady=3)
         direction_names = [
@@ -149,6 +162,14 @@ class WordSearchBookMakerApp(ctk.CTk):
 
         export = self._section(sidebar, "5. Soluciones y exportación")
         ctk.CTkCheckBox(export, text="Incluir soluciones", variable=self._var("export.include_solutions", True)).pack(anchor="w", padx=10, pady=2)
+        export_mode_row = ctk.CTkFrame(export, fg_color="transparent")
+        export_mode_row.pack(fill="x", padx=10, pady=2)
+        ctk.CTkLabel(export_mode_row, text="Modo export", width=128, anchor="w").pack(side="left")
+        ctk.CTkComboBox(export_mode_row, values=["completo", "puzzles_solamente", "soluciones_solamente"], variable=self._var("export.export_mode"), width=165).pack(side="right")
+        solutions_per_row = ctk.CTkFrame(export, fg_color="transparent")
+        solutions_per_row.pack(fill="x", padx=10, pady=2)
+        ctk.CTkLabel(solutions_per_row, text="Soluciones/página", width=128, anchor="w").pack(side="left")
+        ctk.CTkComboBox(solutions_per_row, values=["1", "2", "4"], variable=self._var("export.solutions_per_page"), width=165).pack(side="right")
         for label, key, values in [
             ("Estilo", "export.solution_style", ["círculo", "línea", "resaltado"]),
             ("Orden", "export.order_mode", ["consecutivo", "soluciones_al_final"]),
@@ -180,6 +201,35 @@ class WordSearchBookMakerApp(ctk.CTk):
         theme_row.pack(fill="x", padx=10, pady=2)
         ctk.CTkLabel(theme_row, text="Tema", width=128, anchor="w").pack(side="left")
         ctk.CTkComboBox(theme_row, values=list(THEMES.keys()), variable=self._var("settings.theme"), command=self._on_theme_change, width=165).pack(side="right")
+        
+        # Advanced theme button
+        ctk.CTkButton(settings_section, text="Editor Visual", command=self._open_visual_editor).pack(fill="x", padx=10, pady=2)
+        ctk.CTkButton(settings_section, text="Creador Portada", command=self._open_cover_creator).pack(fill="x", padx=10, pady=2)
+
+        project_section = self._section(sidebar, "8. Proyectos")
+        project_buttons = ctk.CTkFrame(project_section, fg_color="transparent")
+        project_buttons.pack(fill="x", padx=10, pady=(1, 4))
+        ctk.CTkButton(project_buttons, text="Nuevo", width=75, command=self._create_project).pack(side="left")
+        ctk.CTkButton(project_buttons, text="Abrir", width=75, command=self._open_project).pack(side="left", padx=3)
+        ctk.CTkButton(project_buttons, text="Guardar", width=75, command=self._save_project).pack(side="left", padx=3)
+        project_buttons2 = ctk.CTkFrame(project_section, fg_color="transparent")
+        project_buttons2.pack(fill="x", padx=10, pady=(0, 4))
+        ctk.CTkButton(project_buttons2, text="Duplicar", width=75, command=self._duplicate_project).pack(side="left")
+        ctk.CTkButton(project_buttons2, text="Renombrar", width=75, command=self._rename_project).pack(side="left", padx=3)
+        ctk.CTkButton(project_buttons2, text="Eliminar", width=75, command=self._delete_project).pack(side="left", padx=3)
+        self.project_name_entry = self._entry(project_section, "Nombre proyecto", "project.name", 165)
+        self.project_status = ctk.CTkLabel(project_section, text="Sin proyecto cargado", anchor="w", wraplength=310)
+        self.project_status.pack(fill="x", padx=10, pady=(2, 8))
+
+        template_section = self._section(sidebar, "9. Plantillas")
+        template_buttons = ctk.CTkFrame(template_section, fg_color="transparent")
+        template_buttons.pack(fill="x", padx=10, pady=(1, 4))
+        ctk.CTkButton(template_buttons, text="Guardar", width=75, command=self._save_template).pack(side="left")
+        ctk.CTkButton(template_buttons, text="Cargar", width=75, command=self._load_template).pack(side="left", padx=3)
+        ctk.CTkButton(template_buttons, text="Eliminar", width=75, command=self._delete_template).pack(side="left", padx=3)
+        self.template_name_entry = self._entry(template_section, "Nombre plantilla", "template.name", 165)
+        self.template_status = ctk.CTkLabel(template_section, text="Plantillas disponibles", anchor="w", wraplength=310)
+        self.template_status.pack(fill="x", padx=10, pady=(2, 8))
 
         ctk.CTkLabel(content, text="PREVISUALIZACIÓN", font=ctk.CTkFont(size=20, weight="bold")).grid(row=0, column=0, pady=(12, 4))
         self.preview_area = ctk.CTkScrollableFrame(content, label_text="Cargue un CSV y pulse PREVISUALIZAR")
@@ -198,12 +248,20 @@ class WordSearchBookMakerApp(ctk.CTk):
         ctk.CTkButton(controls, text="+", width=35, command=lambda: self._change_zoom(90)).pack(side="left", padx=2)
         self.preview_counter = ctk.CTkLabel(controls, text="Sin páginas")
         self.preview_counter.pack(side="left", padx=12)
+        self.mass_export_button = ctk.CTkButton(controls, text="MASS EXPORT", width=110, command=self._open_mass_export)
+        self.mass_export_button.pack(side="right", padx=5)
+        self.book_preview_button = ctk.CTkButton(controls, text="PREVIEW BOOK", width=120, command=self._open_book_preview)
+        self.book_preview_button.pack(side="right", padx=5)
+        self.overview_button = ctk.CTkButton(controls, text="VER SOPAS", width=100, command=self._open_puzzle_overview)
+        self.overview_button.pack(side="right", padx=5)
         self.preview_button = ctk.CTkButton(controls, text="PREVISUALIZAR", command=lambda: self._start_work("preview"))
         self.preview_button.pack(side="right", padx=5)
         self.export_button = ctk.CTkButton(controls, text="GENERAR PDF", fg_color="#257B3F", hover_color="#17612D", command=lambda: self._start_work("export"))
         self.export_button.pack(side="right", padx=5)
         self.regenerate_button = ctk.CTkButton(controls, text="REGENERAR SOPA", width=140, command=lambda: self._start_work("regenerate_single"))
         self.regenerate_button.pack(side="right", padx=5)
+        self.mass_button = ctk.CTkButton(controls, text="GENERACIÓN MASIVA", width=140, command=lambda: self._start_work("mass_generate"))
+        self.mass_button.pack(side="right", padx=5)
         self.cancel_button = ctk.CTkButton(controls, text="Cancelar", width=85, state="disabled", command=self._cancel_work)
         self.cancel_button.pack(side="right", padx=5)
         bottom = ctk.CTkFrame(content, fg_color="transparent")
@@ -221,6 +279,22 @@ class WordSearchBookMakerApp(ctk.CTk):
             self._variables["page.height"].set(str(height))
             self._variables["page.unit"].set(unit)
 
+    def _on_difficulty_change(self, value: str) -> None:
+        from app.models import DIFFICULTY_PRESETS
+        if value in DIFFICULTY_PRESETS:
+            preset = DIFFICULTY_PRESETS[value]
+            for key, preset_value in preset.items():
+                if key == "rows":
+                    self._variables["grid.rows"].set(str(preset_value))
+                elif key == "columns":
+                    self._variables["grid.columns"].set(str(preset_value))
+                elif key == "allow_intersections":
+                    self._variables["grid.allow_intersections"].set(preset_value)
+                elif key == "max_attempts":
+                    self._variables["grid.max_attempts"].set(str(preset_value))
+                elif key == "prefer_spacing":
+                    self._variables["grid.prefer_spacing"].set(preset_value)
+
     def _on_language_change(self, value: str) -> None:
         self.config_model.language = value
         self.locale.set_language(value)
@@ -237,7 +311,7 @@ class WordSearchBookMakerApp(ctk.CTk):
             "page.margins.top": str(config.page.margins.top), "page.margins.bottom": str(config.page.margins.bottom), "page.margins.left": str(config.page.margins.left), "page.margins.right": str(config.page.margins.right),
             "grid.rows": str(config.grid.rows), "grid.columns": str(config.grid.columns), "grid.allow_reversed": config.grid.allow_reversed,
             "grid.allow_diagonals": config.grid.allow_diagonals, "grid.allow_intersections": config.grid.allow_intersections,
-            "grid.prefer_spacing": config.grid.prefer_spacing,
+            "grid.prefer_spacing": config.grid.prefer_spacing, "grid.difficulty": config.grid.difficulty,
             "layout.title": config.layout.title, "layout.subtitle": config.layout.subtitle, "layout.word_columns": str(config.layout.word_columns),
             "layout.grid_position": config.layout.grid_position, "layout.custom_grid_x_percent": str(config.layout.custom_grid_x_percent), "layout.custom_grid_y_percent": str(config.layout.custom_grid_y_percent),
             "layout.title_size": str(config.layout.title_size), "layout.subtitle_size": str(config.layout.subtitle_size), "layout.grid_font_size": str(config.layout.grid_font_size),
@@ -246,7 +320,10 @@ class WordSearchBookMakerApp(ctk.CTk):
             "layout.word_order": config.layout.word_order, "layout.words_position": config.layout.words_position, "layout.auto_fit": config.layout.auto_fit,
             "export.include_solutions": config.export.include_solutions, "export.solution_style": config.export.solution_style, "export.order_mode": config.export.order_mode,
             "export.selected_puzzles": config.export.selected_puzzles, "export.output_path": config.export.output_path,
+            "export.solutions_per_page": str(config.export.solutions_per_page),
+            "export.export_mode": config.export.export_mode,
             "settings.language": config.language, "settings.theme": config.theme,
+            "project.name": self.current_project.metadata.name if self.current_project else "",
         }
         for direction, value in config.grid.directions.items():
             values[f"direction.{direction}"] = value
@@ -281,6 +358,7 @@ class WordSearchBookMakerApp(ctk.CTk):
         config.grid.allow_diagonals = bool(self._variables["grid.allow_diagonals"].get())
         config.grid.allow_intersections = bool(self._variables["grid.allow_intersections"].get())
         config.grid.prefer_spacing = bool(self._variables["grid.prefer_spacing"].get())
+        config.grid.difficulty = str(self._variables["grid.difficulty"].get())
         config.layout.title = str(self._variables["layout.title"].get())
         config.language = str(self._variables["settings.language"].get())
         config.theme = str(self._variables["settings.theme"].get())
@@ -304,6 +382,7 @@ class WordSearchBookMakerApp(ctk.CTk):
         config.export.order_mode = str(self._variables["export.order_mode"].get())
         config.export.selected_puzzles = str(self._variables["export.selected_puzzles"].get()) or "todas"
         config.export.output_path = str(self._variables["export.output_path"].get()).strip()
+        config.export.solutions_per_page = int(str(self._variables["export.solutions_per_page"].get()))
         if not config.export.output_path:
             raise ValueError("Seleccione un archivo PDF de salida.")
         self.config_model = config
@@ -398,6 +477,9 @@ class WordSearchBookMakerApp(ctk.CTk):
         if task == "regenerate_single" and not self.generated_book:
             messagebox.showwarning("Falta generación", "Genere previamente las sopas.")
             return
+        if task == "mass_generate" and not self.imported_book:
+            messagebox.showwarning("Falta el CSV", "Cargue primero un archivo CSV válido.")
+            return
         try:
             config = self._read_controls_into_config()
             selected = config.selected_numbers([puzzle.number for puzzle in self.imported_book.puzzles])
@@ -429,6 +511,15 @@ class WordSearchBookMakerApp(ctk.CTk):
                 generated = BookGenerationService().regenerate_single_puzzle(
                     self.generated_book, puzzle_number, config.grid, progress, self._cancel_event.is_set
                 )
+            elif task == "mass_generate":
+                generated, failures = BookGenerationService().generate_mass(
+                    self.imported_book, config.grid, progress, self._cancel_event.is_set
+                )
+                if failures:
+                    failure_msg = f"{len(failures)} puzzles failed to generate: {', '.join(str(f[0]) for f in failures)}"
+                    self._events.put(("mass_done", (generated, failures, failure_msg)))
+                else:
+                    self._events.put(("mass_done", (generated, [], "All puzzles generated successfully")))
             else:
                 generated = BookGenerationService().generate(
                     self.imported_book, config.grid, selected, progress, self._cancel_event.is_set  # type: ignore[arg-type]
@@ -440,6 +531,9 @@ class WordSearchBookMakerApp(ctk.CTk):
                 self._events.put(("export_done", (generated, rendered_path)))
             elif task == "regenerate_single":
                 self._events.put(("regenerate_done", generated))
+            elif task == "mass_generate":
+                # Mass generation results handled above
+                pass
             else:
                 self._events.put(("preview_done", generated))
         except BookGenerationCancelled:
@@ -472,6 +566,16 @@ class WordSearchBookMakerApp(ctk.CTk):
                     self.status.configure(text=f"Sopa {self._preview_index + 1} regenerada. Otras sopas sin cambios.")
                     self.progress.set(1)
                     self._set_working(False)
+                elif kind == "mass_done":
+                    generated, failures, message = payload  # type: ignore[assignment]
+                    self.generated_book = generated
+                    self._refresh_preview()
+                    self.status.configure(text=message)
+                    self.progress.set(1)
+                    self._set_working(False)
+                    if failures:
+                        failure_text = "\n".join(f"Puzzle {f[0]}: {f[1][0] if f[1] else 'Unknown error'}" for f in failures[:5])
+                        messagebox.showwarning("Generación Masiva", f"{len(failures)} puzzles fallaron:\n{failure_text}")
                 elif kind == "export_done":
                     book, output = payload  # type: ignore[misc]
                     self.generated_book = book
@@ -530,3 +634,338 @@ class WordSearchBookMakerApp(ctk.CTk):
             self.preview_counter.configure(text=f"{kind} {self._preview_index + 1} de {len(self.generated_book.puzzles)}")
         except Exception as exc:
             self.preview_label.configure(image=None, text=f"No se pudo crear la previsualización:\n{exc}")
+
+    def _create_project(self) -> None:
+        """Create a new project."""
+        project_name = self._variables.get("project.name")
+        if project_name:
+            name = project_name.get()
+        else:
+            name = "nuevo_proyecto"
+        
+        if not name:
+            messagebox.showerror("Error", "Por favor ingrese un nombre para el proyecto.")
+            return
+        
+        try:
+            config = self._read_controls_into_config()
+            project = self.project_manager.create_project(name, config, self.generated_book)
+            self.current_project = project
+            self._update_project_status()
+            messagebox.showinfo("Proyecto Creado", f"Proyecto '{name}' creado exitosamente.")
+        except Exception as exc:
+            messagebox.showerror("Error", f"No se pudo crear el proyecto: {exc}")
+
+    def _open_project(self) -> None:
+        """Open an existing project."""
+        projects = self.project_manager.list_projects()
+        if not projects:
+            messagebox.showinfo("Abrir Proyecto", "No hay proyectos guardados.")
+            return
+        
+        # Create a simple dialog to select project
+        dialog = ctk.CTkToplevel(self)
+        dialog.title("Seleccionar Proyecto")
+        dialog.geometry("400x300")
+        
+        listbox = ctk.CTkScrollableFrame(dialog, width=350, height=200)
+        listbox.pack(padx=20, pady=20)
+        
+        selected_project = [None]
+        
+        for project_name in projects:
+            btn = ctk.CTkButton(listbox, text=project_name, command=lambda n=project_name: selected_project.__setitem__(0, n))
+            btn.pack(fill="x", pady=2)
+        
+        def on_select():
+            if selected_project[0]:
+                try:
+                    project = self.project_manager.load_project(selected_project[0])
+                    self.current_project = project
+                    self.config_model = project.config
+                    self.generated_book = project.book
+                    self._variables["project.name"].set(project.metadata.name)
+                    self._set_controls_from_config()
+                    self._update_project_status()
+                    self._refresh_preview()
+                    dialog.destroy()
+                    messagebox.showinfo("Proyecto Abierto", f"Proyecto '{selected_project[0]}' cargado exitosamente.")
+                except Exception as exc:
+                    messagebox.showerror("Error", f"No se pudo abrir el proyecto: {exc}")
+            else:
+                messagebox.showwarning("Selección", "Por favor seleccione un proyecto.")
+        
+        ctk.CTkButton(dialog, text="Abrir", command=on_select).pack(pady=10)
+
+    def _save_project(self) -> None:
+        """Save the current project."""
+        if not self.current_project:
+            messagebox.showwarning("Guardar Proyecto", "No hay proyecto cargado para guardar.")
+            return
+        
+        try:
+            self.current_project.config = self._read_controls_into_config()
+            self.current_project.book = self.generated_book
+            self.current_project.metadata.name = self._variables.get("project.name", ctk.StringVar(value="")).get()
+            self.project_manager.save_project(self.current_project)
+            self._update_project_status()
+            messagebox.showinfo("Proyecto Guardado", f"Proyecto '{self.current_project.metadata.name}' guardado exitosamente.")
+        except Exception as exc:
+            messagebox.showerror("Error", f"No se pudo guardar el proyecto: {exc}")
+
+    def _duplicate_project(self) -> None:
+        """Duplicate the current project."""
+        if not self.current_project:
+            messagebox.showwarning("Duplicar Proyecto", "No hay proyecto cargado para duplicar.")
+            return
+        
+        new_name = self.current_project.metadata.name + "_copia"
+        try:
+            self.project_manager.duplicate_project(self.current_project.metadata.name, new_name)
+            messagebox.showinfo("Proyecto Duplicado", f"Proyecto duplicado como '{new_name}'.")
+        except Exception as exc:
+            messagebox.showerror("Error", f"No se pudo duplicar el proyecto: {exc}")
+
+    def _rename_project(self) -> None:
+        """Rename the current project."""
+        if not self.current_project:
+            messagebox.showwarning("Renombrar Proyecto", "No hay proyecto cargado para renombrar.")
+            return
+        
+        new_name = self._variables.get("project.name", ctk.StringVar(value="")).get()
+        if not new_name or new_name == self.current_project.metadata.name:
+            messagebox.showwarning("Renombrar Proyecto", "Por favor ingrese un nuevo nombre diferente.")
+            return
+        
+        try:
+            self.project_manager.rename_project(self.current_project.metadata.name, new_name)
+            self.current_project.metadata.name = new_name
+            self._update_project_status()
+            messagebox.showinfo("Proyecto Renombrado", f"Proyecto renombrado a '{new_name}'.")
+        except Exception as exc:
+            messagebox.showerror("Error", f"No se pudo renombrar el proyecto: {exc}")
+
+    def _delete_project(self) -> None:
+        """Delete the current project."""
+        if not self.current_project:
+            messagebox.showwarning("Eliminar Proyecto", "No hay proyecto cargado para eliminar.")
+            return
+        
+        if messagebox.askyesno("Eliminar Proyecto", f"¿Está seguro de eliminar el proyecto '{self.current_project.metadata.name}'? Esta acción no se puede deshacer."):
+            try:
+                self.project_manager.delete_project(self.current_project.metadata.name)
+                self.current_project = None
+                self._variables["project.name"].set("")
+                self._update_project_status()
+                messagebox.showinfo("Proyecto Eliminado", "Proyecto eliminado exitosamente.")
+            except Exception as exc:
+                messagebox.showerror("Error", f"No se pudo eliminar el proyecto: {exc}")
+
+    def _update_project_status(self) -> None:
+        """Update the project status label."""
+        if self.current_project:
+            metadata = self.current_project.metadata
+            status_text = f"Proyecto: {metadata.name}\nEstado: {metadata.status}\nModificado: {metadata.modified_date[:10] if metadata.modified_date else 'N/A'}"
+            self.project_status.configure(text=status_text)
+        else:
+            self.project_status.configure(text="Sin proyecto cargado")
+
+    def _open_puzzle_overview(self) -> None:
+        """Open the puzzle organization overview dialog."""
+        if not self.generated_book or not self.generated_book.puzzles:
+            messagebox.showwarning("Puzzle Overview", "No puzzles generated yet. Please generate puzzles first.")
+            return
+        
+        dialog = PuzzleOverviewDialog(
+            self,
+            self.generated_book,
+            on_select=self._on_puzzle_select,
+            on_delete=self._on_puzzle_delete,
+            on_duplicate=self._on_puzzle_duplicate,
+            on_regenerate=self._on_puzzle_regenerate,
+        )
+
+    def _open_book_preview(self) -> None:
+        """Open the enhanced book preview window."""
+        if not self.generated_book or not self.generated_book.puzzles:
+            messagebox.showwarning("Book Preview", "No puzzles generated yet. Please generate puzzles first.")
+            return
+        
+        config = self._read_controls_into_config()
+        BookPreviewWindow(self, self.generated_book, config)
+
+    def _open_mass_export(self) -> None:
+        """Open the mass export dialog."""
+        if not self.generated_book or not self.generated_book.puzzles:
+            messagebox.showwarning("Mass Export", "No puzzles generated yet. Please generate puzzles first.")
+            return
+        
+        config = self._read_controls_into_config()
+        MassExportDialog(self, self.generated_book, config)
+
+    def _save_template(self) -> None:
+        """Save current configuration as a template."""
+        template_name = self._variables.get("template.name")
+        if template_name:
+            name = template_name.get()
+        else:
+            name = "nueva_plantilla"
+        
+        if not name:
+            messagebox.showerror("Error", "Por favor ingrese un nombre para la plantilla.")
+            return
+        
+        try:
+            config = self._read_controls_into_config()
+            self.template_manager.create_template_from_config(name, config, category="general")
+            self._update_template_status()
+            messagebox.showinfo("Plantilla Guardada", f"Plantilla '{name}' guardada exitosamente.")
+        except Exception as exc:
+            messagebox.showerror("Error", f"No se pudo guardar la plantilla: {exc}")
+
+    def _load_template(self) -> None:
+        """Load a template and apply it to current configuration."""
+        templates = self.template_manager.list_templates()
+        if not templates:
+            messagebox.showinfo("Cargar Plantilla", "No hay plantillas guardadas.")
+            return
+        
+        # Create a simple dialog to select template
+        dialog = ctk.CTkToplevel(self)
+        dialog.title("Seleccionar Plantilla")
+        dialog.geometry("400x300")
+        
+        listbox = ctk.CTkScrollableFrame(dialog, width=350, height=200)
+        listbox.pack(padx=20, pady=20)
+        
+        selected_template = [None]
+        
+        for template_name in templates:
+            btn = ctk.CTkButton(listbox, text=template_name, command=lambda n=template_name: selected_template.__setitem__(0, n))
+            btn.pack(fill="x", pady=2)
+        
+        def on_select():
+            if selected_template[0]:
+                try:
+                    config = self._read_controls_into_config()
+                    merged_config = self.template_manager.apply_template(selected_template[0], config)
+                    self.config_model = merged_config
+                    self._set_controls_from_config()
+                    self._variables["template.name"].set(selected_template[0])
+                    dialog.destroy()
+                    messagebox.showinfo("Plantilla Cargada", f"Plantilla '{selected_template[0]}' aplicada exitosamente.")
+                except Exception as exc:
+                    messagebox.showerror("Error", f"No se pudo cargar la plantilla: {exc}")
+            else:
+                messagebox.showwarning("Selección", "Por favor seleccione una plantilla.")
+        
+        ctk.CTkButton(dialog, text="Cargar", command=on_select).pack(pady=10)
+
+    def _delete_template(self) -> None:
+        """Delete a template."""
+        template_name = self._variables.get("template.name")
+        if template_name:
+            name = template_name.get()
+        else:
+            name = ""
+        
+        if not name:
+            messagebox.showwarning("Eliminar Plantilla", "Por favor ingrese el nombre de la plantilla a eliminar.")
+            return
+        
+        if messagebox.askyesno("Eliminar Plantilla", f"¿Está seguro de eliminar la plantilla '{name}'? Esta acción no se puede deshacer."):
+            try:
+                self.template_manager.delete_template(name)
+                self._variables["template.name"].set("")
+                self._update_template_status()
+                messagebox.showinfo("Plantilla Eliminada", "Plantilla eliminada exitosamente.")
+            except Exception as exc:
+                messagebox.showerror("Error", f"No se pudo eliminar la plantilla: {exc}")
+
+    def _update_template_status(self) -> None:
+        """Update the template status label."""
+        templates = self.template_manager.list_templates()
+        if templates:
+            self.template_status.configure(text=f"Plantillas disponibles: {len(templates)}\n{', '.join(templates[:5])}")
+        else:
+            self.template_status.configure(text="No hay plantillas guardadas")
+
+    def _open_visual_editor(self) -> None:
+        """Open the visual editor dialog."""
+        config = self._read_controls_into_config()
+        VisualEditorDialog(self, config)
+
+    def _open_cover_creator(self) -> None:
+        """Open the cover creator dialog."""
+        config = self._read_controls_into_config()
+        CoverCreatorDialog(self, config)
+
+    def _on_puzzle_select(self, indices: list[int]) -> None:
+        """Handle puzzle selection from overview."""
+        # Navigate to the first selected puzzle
+        if indices:
+            self._preview_index = indices[0]
+            self._refresh_preview()
+
+    def _on_puzzle_delete(self, indices: list[int]) -> None:
+        """Handle puzzle deletion from overview."""
+        if not self.generated_book:
+            return
+        
+        # Delete puzzles in reverse order to preserve indices
+        for index in sorted(indices, reverse=True):
+            if 0 <= index < len(self.generated_book.puzzles):
+                del self.generated_book.puzzles[index]
+        
+        # Re-number remaining puzzles
+        for i, puzzle in enumerate(self.generated_book.puzzles):
+            puzzle.number = i + 1
+        
+        self._refresh_preview()
+        messagebox.showinfo("Puzzles Deleted", f"Deleted {len(indices)} puzzle(s).")
+
+    def _on_puzzle_duplicate(self, indices: list[int]) -> None:
+        """Handle puzzle duplication from overview."""
+        if not self.generated_book:
+            return
+        
+        from app.models import Word
+        from copy import deepcopy
+        
+        # Duplicate puzzles
+        for index in sorted(indices):
+            if 0 <= index < len(self.generated_book.puzzles):
+                original = self.generated_book.puzzles[index]
+                # Create deep copy of the puzzle
+                new_puzzle = deepcopy(original)
+                self.generated_book.puzzles.insert(index + 1, new_puzzle)
+        
+        # Re-number all puzzles
+        for i, puzzle in enumerate(self.generated_book.puzzles):
+            puzzle.number = i + 1
+        
+        self._refresh_preview()
+        messagebox.showinfo("Puzzles Duplicated", f"Duplicated {len(indices)} puzzle(s).")
+
+    def _on_puzzle_regenerate(self, indices: list[int]) -> None:
+        """Handle puzzle regeneration from overview."""
+        if not self.generated_book:
+            return
+        
+        from app.core import BookGenerationService
+        from app.models import GenerationResult
+        
+        service = BookGenerationService()
+        config = self._read_controls_into_config()
+        
+        regenerated_count = 0
+        for index in indices:
+            if 0 <= index < len(self.generated_book.puzzles):
+                puzzle = self.generated_book.puzzles[index]
+                result: GenerationResult = service.regenerate_single_puzzle(puzzle, config.grid)
+                if result.success and result.puzzle:
+                    self.generated_book.puzzles[index] = result.puzzle
+                    regenerated_count += 1
+        
+        self._refresh_preview()
+        messagebox.showinfo("Puzzles Regenerated", f"Regenerated {regenerated_count} of {len(indices)} puzzle(s).")

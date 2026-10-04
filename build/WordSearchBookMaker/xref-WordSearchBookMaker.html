@@ -1042,6 +1042,7 @@ imported by:
  &#8226;   <a href="#PIL.features">PIL.features</a>
  &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
  &#8226;   <a href="#customtkinter.windows.widgets.image.ctk_image">customtkinter.windows.widgets.image.ctk_image</a>
  &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#reportlab.graphics.renderPM">reportlab.graphics.renderPM</a>
@@ -1734,6 +1735,7 @@ imported by:
  &#8226;   <a href="#PIL.features">PIL.features</a>
  &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
  &#8226;   <a href="#customtkinter.windows.widgets.image.ctk_image">customtkinter.windows.widgets.image.ctk_image</a>
  &#8226;   <a href="#reportlab.graphics.renderPM">reportlab.graphics.renderPM</a>
  &#8226;   <a href="#reportlab.lib.utils">reportlab.lib.utils</a>
@@ -3493,20 +3495,31 @@ imported by:
  &#8226;   <a href="#_colorize">_colorize</a>
  &#8226;   <a href="#_pyrepl.pager">_pyrepl.pager</a>
  &#8226;   <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
  &#8226;   <a href="#app.core.validation">app.core.validation</a>
  &#8226;   <a href="#app.csv.parser">app.csv.parser</a>
  &#8226;   <a href="#app.i18n">app.i18n</a>
  &#8226;   <a href="#app.i18n.locale">app.i18n.locale</a>
  &#8226;   <a href="#app.i18n.translations">app.i18n.translations</a>
  &#8226;   <a href="#app.models.domain">app.models.domain</a>
+ &#8226;   <a href="#app.models.project">app.models.project</a>
  &#8226;   <a href="#app.pdf.fonts">app.pdf.fonts</a>
  &#8226;   <a href="#app.pdf.layout">app.pdf.layout</a>
  &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
  &#8226;   <a href="#app.pdf.renderer">app.pdf.renderer</a>
  &#8226;   <a href="#app.themes">app.themes</a>
+ &#8226;   <a href="#app.themes.advanced_themes">app.themes.advanced_themes</a>
  &#8226;   <a href="#app.themes.theme_manager">app.themes.theme_manager</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
+ &#8226;   <a href="#app.ui.cover_creator">app.ui.cover_creator</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
+ &#8226;   <a href="#app.ui.puzzle_overview">app.ui.puzzle_overview</a>
+ &#8226;   <a href="#app.ui.visual_editor">app.ui.visual_editor</a>
  &#8226;   <a href="#app.utils.config_io">app.utils.config_io</a>
  &#8226;   <a href="#charset_normalizer">charset_normalizer</a>
  &#8226;   <a href="#charset_normalizer.api">charset_normalizer.api</a>
@@ -4965,16 +4978,25 @@ imported by:
 imports:
     <a href="#app">app</a>
  &#8226;   <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
  &#8226;   <a href="#app.core.validation">app.core.validation</a>
 
   </div>
   <div class="import">
 imported by:
     <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
  &#8226;   <a href="#app.core.validation">app.core.validation</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
 
   </div>
 
@@ -4983,6 +5005,27 @@ imported by:
 <div class="node">
   <a name="app.core.book_service"></a>
   <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/core/book_service.py" type="text/plain"><tt>app.core.book_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.core">app.core</a>
+ &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.core">app.core</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.core.book_validator"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/core/book_validator.py" type="text/plain"><tt>app.core.book_validator</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
     <a href="#__future__">__future__</a>
@@ -5018,7 +5061,78 @@ imports:
 imported by:
     <a href="#app.core">app.core</a>
  &#8226;   <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.validation">app.core.validation</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.core.mass_export"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/core/mass_export.py" type="text/plain"><tt>app.core.mass_export</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.core">app.core</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#app.pdf">app.pdf</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.core">app.core</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.core.project_manager"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/core/project_manager.py" type="text/plain"><tt>app.core.project_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.core">app.core</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.core">app.core</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.core.template_manager"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/core/template_manager.py" type="text/plain"><tt>app.core.template_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.core">app.core</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.core">app.core</a>
 
   </div>
 
@@ -5154,19 +5268,30 @@ imported by:
 imports:
     <a href="#app">app</a>
  &#8226;   <a href="#app.models.domain">app.models.domain</a>
+ &#8226;   <a href="#app.models.project">app.models.project</a>
 
   </div>
   <div class="import">
 imported by:
     <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
  &#8226;   <a href="#app.core.validation">app.core.validation</a>
  &#8226;   <a href="#app.csv.parser">app.csv.parser</a>
  &#8226;   <a href="#app.models.domain">app.models.domain</a>
+ &#8226;   <a href="#app.models.project">app.models.project</a>
  &#8226;   <a href="#app.pdf.layout">app.pdf.layout</a>
  &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
  &#8226;   <a href="#app.pdf.renderer">app.pdf.renderer</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
+ &#8226;   <a href="#app.ui.cover_creator">app.ui.cover_creator</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
+ &#8226;   <a href="#app.ui.puzzle_overview">app.ui.puzzle_overview</a>
+ &#8226;   <a href="#app.ui.visual_editor">app.ui.visual_editor</a>
  &#8226;   <a href="#app.utils.config_io">app.utils.config_io</a>
 
   </div>
@@ -5194,6 +5319,26 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="app.models.project"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/models/project.py" type="text/plain"><tt>app.models.project</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.models">app.models</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="app.pdf"></a>
   <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/pdf/__init__.py" type="text/plain"><tt>app.pdf</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
@@ -5205,11 +5350,13 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#app.pdf.fonts">app.pdf.fonts</a>
+    <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.pdf.fonts">app.pdf.fonts</a>
  &#8226;   <a href="#app.pdf.layout">app.pdf.layout</a>
  &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
  &#8226;   <a href="#app.pdf.renderer">app.pdf.renderer</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
 
   </div>
 
@@ -5283,6 +5430,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
 
   </div>
 
@@ -5327,9 +5475,29 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#app.themes.theme_manager">app.themes.theme_manager</a>
+    <a href="#app.themes.advanced_themes">app.themes.advanced_themes</a>
+ &#8226;   <a href="#app.themes.theme_manager">app.themes.theme_manager</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
  &#8226;   <a href="#main.py">main.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.themes.advanced_themes"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/themes/advanced_themes.py" type="text/plain"><tt>app.themes.advanced_themes</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.themes">app.themes</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.ui.application">app.ui.application</a>
 
   </div>
 
@@ -5367,6 +5535,11 @@ imports:
   <div class="import">
 imported by:
     <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
+ &#8226;   <a href="#app.ui.cover_creator">app.ui.cover_creator</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
+ &#8226;   <a href="#app.ui.puzzle_overview">app.ui.puzzle_overview</a>
+ &#8226;   <a href="#app.ui.visual_editor">app.ui.visual_editor</a>
 
   </div>
 
@@ -5388,8 +5561,15 @@ imports:
  &#8226;   <a href="#app.pdf.fonts">app.pdf.fonts</a>
  &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
  &#8226;   <a href="#app.themes">app.themes</a>
+ &#8226;   <a href="#app.themes.advanced_themes">app.themes.advanced_themes</a>
  &#8226;   <a href="#app.ui">app.ui</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
+ &#8226;   <a href="#app.ui.cover_creator">app.ui.cover_creator</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
+ &#8226;   <a href="#app.ui.puzzle_overview">app.ui.puzzle_overview</a>
+ &#8226;   <a href="#app.ui.visual_editor">app.ui.visual_editor</a>
  &#8226;   <a href="#app.utils">app.utils</a>
+ &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#pathlib">pathlib</a>
@@ -5404,6 +5584,113 @@ imports:
 imported by:
     <a href="#app.ui">app.ui</a>
  &#8226;   <a href="#main.py">main.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.ui.book_preview"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/ui/book_preview.py" type="text/plain"><tt>app.ui.book_preview</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#PIL">PIL</a>
+ &#8226;   <a href="#PIL.Image">PIL.Image</a>
+ &#8226;   <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#app.pdf">app.pdf</a>
+ &#8226;   <a href="#app.pdf.preview">app.pdf.preview</a>
+ &#8226;   <a href="#app.ui">app.ui</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.ui.application">app.ui.application</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.ui.cover_creator"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/ui/cover_creator.py" type="text/plain"><tt>app.ui.cover_creator</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#app.ui">app.ui</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.ui.application">app.ui.application</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.ui.mass_export_dialog"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/ui/mass_export_dialog.py" type="text/plain"><tt>app.ui.mass_export_dialog</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.core">app.core</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#app.ui">app.ui</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
+ &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.ui.application">app.ui.application</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.ui.puzzle_overview"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/ui/puzzle_overview.py" type="text/plain"><tt>app.ui.puzzle_overview</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#app.ui">app.ui</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.ui.application">app.ui.application</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="app.ui.visual_editor"></a>
+  <a target="code" href="///C:/Users/alvip/not_alviii/Word%20Search%20-%20not_alviii/app/ui/visual_editor.py" type="text/plain"><tt>app.ui.visual_editor</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#app.models">app.models</a>
+ &#8226;   <a href="#app.ui">app.ui</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#app.ui.application">app.ui.application</a>
 
   </div>
 
@@ -7512,6 +7799,7 @@ imports:
 imported by:
     <a href="#PIL.GifImagePlugin">PIL.GifImagePlugin</a>
  &#8226;   <a href="#_sre">_sre</a>
+ &#8226;   <a href="#app.ui.application">app.ui.application</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#customtkinter.windows.widgets.ctk_combobox">customtkinter.windows.widgets.ctk_combobox</a>
@@ -7835,6 +8123,11 @@ imports:
 imported by:
     <a href="#app.themes.theme_manager">app.themes.theme_manager</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
+ &#8226;   <a href="#app.ui.cover_creator">app.ui.cover_creator</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
+ &#8226;   <a href="#app.ui.puzzle_overview">app.ui.puzzle_overview</a>
+ &#8226;   <a href="#app.ui.visual_editor">app.ui.visual_editor</a>
  &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#customtkinter.windows">customtkinter.windows</a>
  &#8226;   <a href="#customtkinter.windows.widgets.core_widget_classes.ctk_base_class">customtkinter.windows.widgets.core_widget_classes.ctk_base_class</a>
@@ -9028,10 +9321,16 @@ imports:
   <div class="import">
 imported by:
     <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
  &#8226;   <a href="#app.csv.parser">app.csv.parser</a>
  &#8226;   <a href="#app.models.domain">app.models.domain</a>
+ &#8226;   <a href="#app.models.project">app.models.project</a>
  &#8226;   <a href="#app.pdf.layout">app.pdf.layout</a>
+ &#8226;   <a href="#app.themes.advanced_themes">app.themes.advanced_themes</a>
  &#8226;   <a href="#app.themes.theme_manager">app.themes.theme_manager</a>
  &#8226;   <a href="#pandas.core.dtypes.inference">pandas.core.dtypes.inference</a>
  &#8226;   <a href="#pandas.core.groupby.base">pandas.core.groupby.base</a>
@@ -9057,6 +9356,10 @@ imports:
 imported by:
     <a href="#PIL._imagingcms">PIL._imagingcms</a>
  &#8226;   <a href="#_strptime">_strptime</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
+ &#8226;   <a href="#app.models.project">app.models.project</a>
  &#8226;   <a href="#calendar">calendar</a>
  &#8226;   <a href="#dateutil.easter">dateutil.easter</a>
  &#8226;   <a href="#dateutil.parser._parser">dateutil.parser._parser</a>
@@ -14309,7 +14612,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#app.utils.config_io">app.utils.config_io</a>
+    <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
+ &#8226;   <a href="#app.utils.config_io">app.utils.config_io</a>
  &#8226;   <a href="#charset_normalizer.models">charset_normalizer.models</a>
  &#8226;   <a href="#customtkinter.windows.widgets.theme.theme_manager">customtkinter.windows.widgets.theme.theme_manager</a>
  &#8226;   <a href="#dateutil.zoneinfo">dateutil.zoneinfo</a>
@@ -22551,8 +22856,10 @@ imported by:
  &#8226;   <a href="#_colorize">_colorize</a>
  &#8226;   <a href="#_pyrepl.pager">_pyrepl.pager</a>
  &#8226;   <a href="#_strptime">_strptime</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
  &#8226;   <a href="#app.pdf.fonts">app.pdf.fonts</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#asyncio.base_events">asyncio.base_events</a>
  &#8226;   <a href="#asyncio.base_subprocess">asyncio.base_subprocess</a>
@@ -35255,7 +35562,10 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#app.csv.parser">app.csv.parser</a>
+    <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
+ &#8226;   <a href="#app.csv.parser">app.csv.parser</a>
  &#8226;   <a href="#app.pdf.fonts">app.pdf.fonts</a>
  &#8226;   <a href="#app.pdf.renderer">app.pdf.renderer</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
@@ -40393,6 +40703,7 @@ imports:
 imported by:
     <a href="#_threading_local">_threading_local</a>
  &#8226;   <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
  &#8226;   <a href="#asyncio.base_events">asyncio.base_events</a>
  &#8226;   <a href="#asyncio.events">asyncio.events</a>
  &#8226;   <a href="#asyncio.mixins">asyncio.mixins</a>
@@ -40533,6 +40844,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
  &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#customtkinter.windows.ctk_tk">customtkinter.windows.ctk_tk</a>
  &#8226;   <a href="#customtkinter.windows.ctk_toplevel">customtkinter.windows.ctk_toplevel</a>
@@ -40637,6 +40949,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
  &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#tkinter">tkinter</a>
 
@@ -40673,6 +40986,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#app.ui.application">app.ui.application</a>
+ &#8226;   <a href="#app.ui.mass_export_dialog">app.ui.mass_export_dialog</a>
  &#8226;   <a href="#tkinter">tkinter</a>
  &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
 
@@ -41041,12 +41355,20 @@ imported by:
  &#8226;   <a href="#_colorize">_colorize</a>
  &#8226;   <a href="#_pyrepl.pager">_pyrepl.pager</a>
  &#8226;   <a href="#app.core.book_service">app.core.book_service</a>
+ &#8226;   <a href="#app.core.book_validator">app.core.book_validator</a>
  &#8226;   <a href="#app.core.generator">app.core.generator</a>
+ &#8226;   <a href="#app.core.mass_export">app.core.mass_export</a>
+ &#8226;   <a href="#app.core.project_manager">app.core.project_manager</a>
+ &#8226;   <a href="#app.core.template_manager">app.core.template_manager</a>
  &#8226;   <a href="#app.i18n.locale">app.i18n.locale</a>
  &#8226;   <a href="#app.i18n.translations">app.i18n.translations</a>
  &#8226;   <a href="#app.models.domain">app.models.domain</a>
+ &#8226;   <a href="#app.models.project">app.models.project</a>
  &#8226;   <a href="#app.pdf.renderer">app.pdf.renderer</a>
+ &#8226;   <a href="#app.themes.advanced_themes">app.themes.advanced_themes</a>
  &#8226;   <a href="#app.themes.theme_manager">app.themes.theme_manager</a>
+ &#8226;   <a href="#app.ui.book_preview">app.ui.book_preview</a>
+ &#8226;   <a href="#app.ui.puzzle_overview">app.ui.puzzle_overview</a>
  &#8226;   <a href="#asyncio.timeouts">asyncio.timeouts</a>
  &#8226;   <a href="#charset_normalizer.api">charset_normalizer.api</a>
  &#8226;   <a href="#charset_normalizer.legacy">charset_normalizer.legacy</a>
