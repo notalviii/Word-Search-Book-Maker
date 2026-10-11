@@ -26,6 +26,7 @@ from app.ui.book_preview import BookPreviewWindow
 from app.ui.mass_export_dialog import MassExportDialog
 from app.ui.visual_editor import VisualEditorDialog
 from app.ui.cover_creator import CoverCreatorDialog
+from app.ui.about_dialog import AboutDialog
 
 
 class WordSearchBookMakerApp(ctk.CTk):
@@ -33,7 +34,7 @@ class WordSearchBookMakerApp(ctk.CTk):
 
     def __init__(self) -> None:
         super().__init__()
-        self.title("Word Search Book Maker")
+        self.title("Word Search Book Maker v3.0.1")
         self.geometry("1360x860")
         self.minsize(1080, 700)
         ctk.set_appearance_mode("system")
@@ -202,9 +203,10 @@ class WordSearchBookMakerApp(ctk.CTk):
         ctk.CTkLabel(theme_row, text="Tema", width=128, anchor="w").pack(side="left")
         ctk.CTkComboBox(theme_row, values=list(THEMES.keys()), variable=self._var("settings.theme"), command=self._on_theme_change, width=165).pack(side="right")
         
-        # Advanced theme button
+        # Advanced buttons
         ctk.CTkButton(settings_section, text="Editor Visual", command=self._open_visual_editor).pack(fill="x", padx=10, pady=2)
         ctk.CTkButton(settings_section, text="Creador Portada", command=self._open_cover_creator).pack(fill="x", padx=10, pady=2)
+        ctk.CTkButton(settings_section, text="Acerca de", command=self._open_about).pack(fill="x", padx=10, pady=(2, 7))
 
         project_section = self._section(sidebar, "8. Proyectos")
         project_buttons = ctk.CTkFrame(project_section, fg_color="transparent")
@@ -899,6 +901,10 @@ class WordSearchBookMakerApp(ctk.CTk):
         """Open the cover creator dialog."""
         config = self._read_controls_into_config()
         CoverCreatorDialog(self, config)
+
+    def _open_about(self) -> None:
+        """Open the about dialog."""
+        AboutDialog(self)
 
     def _on_puzzle_select(self, indices: list[int]) -> None:
         """Handle puzzle selection from overview."""

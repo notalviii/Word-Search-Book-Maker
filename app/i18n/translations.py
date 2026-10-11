@@ -84,6 +84,9 @@ class UITranslations(TypedDict):
     save: str
     load: str
     reset: str
+    about: str
+    about: str
+    about: str
     
     # Preview controls
     previous: str
@@ -212,6 +215,8 @@ TRANSLATIONS: dict[str, Translations] = {
             "save": "Save",
             "load": "Load",
             "reset": "Reset",
+            "about": "About",
+            "about": "About",
             "previous": "← Previous",
             "next": "Next →",
             "view_solution": "View solution",
@@ -334,6 +339,8 @@ TRANSLATIONS: dict[str, Translations] = {
             "save": "Guardar",
             "load": "Cargar",
             "reset": "Restablecer",
+            "about": "Acerca de",
+            "about": "Acerca de",
             "previous": "← Anterior",
             "next": "Siguiente →",
             "view_solution": "Ver solución",
@@ -461,6 +468,7 @@ TRANSLATIONS["fr"] = {
         "save": "Enregistrer",
         "load": "Charger",
         "reset": "Réinitialiser",
+        "about": "À propos",
         "previous": "← Précédent",
         "next": "Suivant →",
         "view_solution": "Voir solution",
@@ -583,6 +591,7 @@ TRANSLATIONS["de"] = {
         "save": "Speichern",
         "load": "Laden",
         "reset": "Zurücksetzen",
+        "about": "Über",
         "previous": "← Zurück",
         "next": "Weiter →",
         "view_solution": "Lösung anzeigen",
@@ -705,6 +714,7 @@ TRANSLATIONS["it"] = {
         "save": "Salva",
         "load": "Carica",
         "reset": "Ripristina",
+        "about": "Informazioni",
         "previous": "← Precedente",
         "next": "Successivo →",
         "view_solution": "Vedi soluzione",
@@ -827,6 +837,7 @@ TRANSLATIONS["pt"] = {
         "save": "Salvar",
         "load": "Carregar",
         "reset": "Redefinir",
+        "about": "Sobre",
         "previous": "← Anterior",
         "next": "Próximo →",
         "view_solution": "Ver solução",

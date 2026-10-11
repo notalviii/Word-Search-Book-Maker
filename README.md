@@ -1,6 +1,13 @@
-# Word Search Book Maker v3.0.0
+# Word Search Book Maker v3.0.1
 
-A professional Windows desktop application for creating word search puzzle books and their solutions in PDF format. The application maintains the grid, words and coordinates as domain data; solutions are drawn over **the same grid**, never over a regenerated puzzle.
+A professional Windows desktop application for creating word search puzzle books and their solutions in PDF format. The application maintains the grid, words and coordinates as domain data; solutions are drawn over **the same grid**, never over a regenerated puzzle. 
+
+## Version 3.0.1 New Features
+
+### About Dialog
+- **Creator Information**: Displays app creator "not_alviii"
+- **Version Display**: Shows current version v3.0.1
+- **Application Info**: Displays application name and other metadata
 
 ## Version 3.0.0 New Features
 
@@ -356,11 +363,42 @@ The executable will appear in `dist\WordSearchBookMaker.exe`. The manual equival
 pyinstaller --noconfirm --clean WordSearchBookMaker.spec
 ```
 
-**v3.0.0 Build:**
+**v3.0.1 Build:**
 - Uses spec file for better packaging control
 - Includes all dependencies, translation files, and theme resources
 - No Python installation required on target computer
 - Launches without console window
+
+### Windows Defender SmartScreen Warning
+
+When you first run the executable, Windows Defender SmartScreen may display a warning because the application is not digitally signed. This is normal for applications built with PyInstaller.
+
+**To unblock the application:**
+
+1. When SmartScreen displays the warning, click **"Más información"** (More info)
+2. Click **"Ejecutar de todos modos"** (Run anyway)
+3. Windows will remember this decision and will not block the application in the future
+
+**Alternative: Add to Windows Defender exclusions**
+
+If you prefer to add the application to Windows Defender exclusions:
+
+1. Open Windows Defender
+2. Go to **"Protección contra virus y amenazas"** > **"Configuración de protección"**
+3. Go to **"Exclusiones"** > **"Agregar o quitar exclusiones"**
+4. Add the file `WordSearchBookMaker.exe` or the entire `dist` folder
+
+**Alternative: Disable SmartScreen temporarily**
+
+If you prefer to disable the SmartScreen control temporarily:
+
+1. Open Windows Security
+2. Go to **"App y navegador"** > **"Control de aplicaciones"**
+3. Change **"Control de aplicaciones"** to **"Desactivado"**
+4. Run the application
+5. Re-enable SmartScreen after running the application
+
+**Note:** The application is safe and created by the developer "not_alviii". It does not contain any malicious code.
 
 ## Troubleshooting
 
@@ -436,6 +474,11 @@ The application includes four built-in themes:
 
 ## Version History
 
+### v3.0.1
+- **About Dialog**: Added About dialog showing version and creator information
+- **Version Update**: Updated to version 3.0.1
+- **Creator Credit**: Added creator "not_alviii" to About dialog
+
 ### v3.0.0
 - **Solutions Enhancement**: Flexible 1/2/4 solutions per page with optimised 2×2 layout
 - **Mass Generation**: Generate hundreds of puzzles with failure recovery
@@ -463,6 +506,10 @@ The application includes four built-in themes:
 - Individual puzzle regeneration
 - Improved word spacing algorithm
 - Enhanced Windows executable packaging
+
+## Credits
+
+**Created by**: not_alviii 🧸 and Devin
 
 ## Core Principles
 

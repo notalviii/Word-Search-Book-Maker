@@ -464,6 +464,10 @@
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\ui\\__init__.py',
    'PYMODULE'),
+  ('app.ui.about_dialog',
+   'C:\\Users\\alvip\\not_alviii\\Word Search - '
+   'not_alviii\\app\\ui\\about_dialog.py',
+   'PYMODULE'),
   ('app.ui.application',
    'C:\\Users\\alvip\\not_alviii\\Word Search - '
    'not_alviii\\app\\ui\\application.py',
