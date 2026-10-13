@@ -1,8 +1,6 @@
 # Word Search Book Maker v3.0.1
 
-A professional Windows desktop application for creating word search puzzle books and their solutions in PDF format. The application maintains the grid, words and coordinates as domain data; solutions are drawn over **the same grid**, never over a regenerated puzzle. 
-
-## Version 3.0.1 New Features
+A professional Windows desktop application for creating word search puzzle books and their solutions in PDF format. The application maintains the grid, words and coordinates as domain data; solutions are drawn over **the same grid**, never over a regenerated puzzle.
 
 ### About Dialog
 - **Creator Information**: Displays app creator "not_alviii"
@@ -156,6 +154,10 @@ A professional Windows desktop application for creating word search puzzle books
 - **Extensible Architecture**: Easy to add additional languages
 
 ## Requirements and Installation
+
+- In releases there's a exe. file, that you are be able to run it. (If your OS is Windows)
+
+# Or another option if you wanted it
 
 - Windows and Python 3.12 or later
 - Updated `pip`
@@ -349,26 +351,11 @@ The suite covers Spanish normalisation, variable/erroneous CSV, generation, dire
 - Enhanced validation
 - Enhanced export configuration
 
-## Windows Executable
-
-After installing dependencies, run:
-
-```powershell
-.\build_windows.bat
-```
-
-The executable will appear in `dist\WordSearchBookMaker.exe`. The manual equivalent is:
-
-```powershell
-pyinstaller --noconfirm --clean WordSearchBookMaker.spec
-```
-
 **v3.0.1 Build:**
 - Uses spec file for better packaging control
 - Includes all dependencies, translation files, and theme resources
 - No Python installation required on target computer
 - Launches without console window
-- **Standalone Distribution**: The `.exe` file works independently; only the executable needs to be distributed. The application automatically creates necessary folders (`projects/`, `templates/`, `output/`) when needed.
 
 ### Windows Defender SmartScreen Warning
 
@@ -507,10 +494,6 @@ The application includes four built-in themes:
 - Individual puzzle regeneration
 - Improved word spacing algorithm
 - Enhanced Windows executable packaging
-
-## Credits
-
-**Created by**: not_alviii 🧸 and Devin
 
 ## Core Principles
 
