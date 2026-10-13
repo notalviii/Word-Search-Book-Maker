@@ -368,6 +368,7 @@ pyinstaller --noconfirm --clean WordSearchBookMaker.spec
 - Includes all dependencies, translation files, and theme resources
 - No Python installation required on target computer
 - Launches without console window
+- **Standalone Distribution**: The `.exe` file works independently; only the executable needs to be distributed. The application automatically creates necessary folders (`projects/`, `templates/`, `output/`) when needed.
 
 ### Windows Defender SmartScreen Warning
 
